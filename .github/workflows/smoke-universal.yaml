@@ -8,14 +8,22 @@ on:
   pull_request:
     paths:
       - src/universal/**
-      - .github/universal/smoke-universal.yaml
+      - .github/workflows/smoke-universal.yaml
       - .github/actions/**
       - build/**
 jobs:
   smoke-test:
     name: Smoke test
-    runs-on: devcontainer-image-builder-ubuntu
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
     steps:
+    # These large images need the disk occupied by unused hosted-runner SDKs.
+    - name: Prepare disk for large image
+      run: |
+        sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /opt/hostedtoolcache/CodeQL
+        docker image prune --all --force
+        df -h /
+
     - name: Checkout
       id: checkout
       uses: actions/checkout@v6
