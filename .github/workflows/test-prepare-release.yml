@@ -19,7 +19,7 @@ permissions:
 jobs:
   test-prepare-release:
     name: Test prepare-release script
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
       - name: Run prepare-release tests
